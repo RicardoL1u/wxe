@@ -31,5 +31,6 @@ DISTRIBUTED_ARGS="
     --master_port $MASTER_PORT
 "
 echo $MASTER_ADDR
-
+echo $GPUS_PER_NODE
+echo $NNODES
 torchrun $DISTRIBUTED_ARGS benchmarkComm.py -b 8M -e 1024M -f 2 -g 16

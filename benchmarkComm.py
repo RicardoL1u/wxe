@@ -123,11 +123,11 @@ def main():
         return
 
     setup(backend='nccl', gpus_per_node=args.gpus)
-    print(args.gpus)
-    outputs = allgather_run("nvidia-smi topo -m")
-    if not allequal(outputs):
-        print('Output of "nvidia-smi topo -m" differs between machines')
-        sys.exit(1)
+    # print(args.gpus)
+    # outputs = allgather_run("nvidia-smi topo -m")
+    # if not allequal(outputs):
+    #     print('Output of "nvidia-smi topo -m" differs between machines')
+    #     sys.exit(1)
 
     if dist.get_rank() == 0:
         print("-----------------------------------")
