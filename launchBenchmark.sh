@@ -32,4 +32,4 @@ DISTRIBUTED_ARGS="
 "
 echo $MASTER_ADDR
 
-torchrun $DISTRIBUTED_ARGS benchmark.py -b 8M -e 1024M -f 2 -g 16
+torchrun $DISTRIBUTED_ARGS benchmarkComm.py -b 8M -e 1024M -f 2 -g 16
