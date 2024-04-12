@@ -135,8 +135,8 @@ def main():
         print("-----------------------------------")
         print(f"* PyTorch version: {torch.__version__}")
         print(f"* CUDA version: {torch.version.cuda}")
-        print("--- nvidia-smi topo -m ---")
-        print(outputs[0])
+        # print("--- nvidia-smi topo -m ---")
+        # print(outputs[0])
         print("--------------------------")
 
     benchmark_nccl_communication(args.begin_size, args.end_size, args.factor,args.gpus)
