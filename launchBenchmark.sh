@@ -29,4 +29,4 @@ DISTRIBUTED_ARGS="
     --master_addr $MASTER_ADDR \
     --master_port $MASTER_PORT"
 
-torchrun $DISTRIBUTED_ARGS benchmark.py -b 8M -e 1024M -f 2 -g 2
+torchrun $DISTRIBUTED_ARGS benchmark.py -b 8M -e 1024M -f 2 -g 16
