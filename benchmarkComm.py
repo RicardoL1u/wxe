@@ -61,8 +61,9 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
         dist.barrier()
         start_time = time.time()
         
-        dist.all_reduce(tensor)
-        dist.barrier()
+        for _ in range(num_tests):
+            dist.all_reduce(tensor)
+            dist.barrier()
 
         duration = (time.time() - start_time)
         algbw = (size / duration) / 1e9
