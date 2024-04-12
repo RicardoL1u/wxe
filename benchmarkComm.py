@@ -60,7 +60,7 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
             dist.all_reduce(tensor)
         duration = (time.time() - start_time) / num_tests
         algbw = (size / duration) / 1e9
-        busbw = algbw * (2 * (gpus_per_node - 1) / gpus_per_node)
+        busbw = algbw * (2 * (gpus_node - 1) / gpus_node)
         print(f"Size: {size} bytes, Duration: {duration:.6f}s, Algbw: {algbw:.2f} GB/s, Busbw: {busbw:.2f} GB/s")
         size *= factor
 
