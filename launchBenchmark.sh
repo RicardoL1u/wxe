@@ -31,4 +31,4 @@ DISTRIBUTED_ARGS="
     --master_port $MASTER_PORT
 "
 
-torchrun $DISTRIBUTED_ARGS benchmarkComm.py -b 8M -e 1024M -f 2 -g $WORLD_SIZE
+torchrun $DISTRIBUTED_ARGS benchmarkComm.py -b 1G -e 128G -f 2 -g $WORLD_SIZE
