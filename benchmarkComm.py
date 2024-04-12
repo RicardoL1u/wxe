@@ -54,6 +54,7 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
         
         num_elements = size // (torch.finfo(torch.float32).bits // 8)
 
+
         tensor = torch.rand(num_elements, device='cuda')
         tensor_size = tensor.element_size()
         print(f"Tensor size: {tensor_size} bytes")
@@ -61,6 +62,8 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
         start_time = time.time()
         
         dist.all_reduce(tensor)
+        dist.barrier()
+
         duration = (time.time() - start_time)
         algbw = (size / duration) / 1e9
         busbw = algbw * (2 * (gpus_node - 1) / gpus_node)
@@ -124,7 +127,8 @@ def main():
         return
 
     setup(backend='nccl', gpus_per_node=args.gpus)
-    print(args.gpus)
+    print(f"Rank: {dist.get_rank()}, World size: {dist.get_world_size()}")
+    print(f"Using GPUs: {torch.cuda.current_device()}")
     # print(args.gpus)
     # outputs = allgather_run("nvidia-smi topo -m")
     # if not allequal(outputs):
