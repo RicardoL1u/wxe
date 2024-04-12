@@ -8,7 +8,7 @@ export NCCL_IB_RETRY_CNT=${NCCL_IB_RETRY_CNT:-7}
 export NCCL_P2P_DISABLE=${NCCL_P2P_DISABLE:-0}
 
 # 设置多线程数量
-export OMP_NUM_THREADS=${OMP_NUM_THREADS:-4}#需动态配置
+export OMP_NUM_THREADS=${OMP_NUM_THREADS:-4} #需动态配置
 # export OMP_NUM_THREADS=4
 export CUDA_DEVICE_MAX_CONNECTIONS=${CUDA_DEVICE_MAX_CONNECTIONS:-1} #PP
 
@@ -29,7 +29,7 @@ DISTRIBUTED_ARGS="
     --node_rank $NODE_RANK \
     --master_addr $MASTER_ADDR \
     --master_port $MASTER_PORT
-
+"
 echo $MASTER_ADDR
 
 torchrun $DISTRIBUTED_ARGS benchmark.py -b 8M -e 1024M -f 2 -g 16
