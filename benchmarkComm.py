@@ -54,6 +54,8 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
         num_elements = size // (torch.finfo(torch.float32).bits // 8)
 
         tensor = torch.rand(num_elements, device='cuda')
+        tensor_type = tensor.dtype
+        print("Tensor type:", tensor_type)
         dist.barrier()
         start_time = time.time()
         for _ in range(num_tests):
