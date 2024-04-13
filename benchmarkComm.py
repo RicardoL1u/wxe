@@ -50,7 +50,7 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
     print(f"NCCL communication benchmark from {begin_size} to {end_size} by {factor}x factor.")
     size = parse_size(begin_size)
     end_size = parse_size(end_size)
-    #在这之前做一下warmup, 做5轮的all_reduce
+    #在这之前做一下warmup, 做5轮的all_gather
     tensor = torch.rand(size // (torch.finfo(torch.float32).bits // 8), device='cuda')
     for _ in range(5):
         dist.all_gather(tensor)
