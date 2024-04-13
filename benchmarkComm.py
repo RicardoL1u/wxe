@@ -53,8 +53,8 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
     #在这之前做一下warmup, 做5轮的all_reduce
     tensor = torch.rand(size // (torch.finfo(torch.float32).bits // 8), device='cuda')
     for _ in range(5):
-        dist.all_reduce(tensor)
-        dist.barrier()  # synchronize all processes
+        dist.all_gather(tensor)
+    dist.barrier()  # synchronize all processes
     
     while size <= end_size:
         
@@ -67,8 +67,8 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
         start_time = time.time()
         
         for _ in range(num_tests):
-            dist.all_reduce(tensor)
-            dist.barrier()
+            dist.all_gather(tensor)
+        dist.barrier()
 
         duration = (time.time() - start_time) / num_tests
         algbw = (size / duration) / 1e9
