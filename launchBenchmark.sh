@@ -30,5 +30,5 @@ DISTRIBUTED_ARGS="
     --master_port $MASTER_PORT
 "
 echo "test"
-echo NODE_RANK
+echo $NODE_RANK
 torchrun $DISTRIBUTED_ARGS benchmarkComm.py -b 128M -e 4G -f 2 -g $WORLD_SIZE
