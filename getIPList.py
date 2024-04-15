@@ -5,9 +5,7 @@ import torch.distributed as dist
 
 def setup(backend):
     """Initialize distributed environment based on environment variables."""
-    dist.init_process_group(
-        backend=backend,
-    )
+    dist.init_process_group(backend=backend)
     world_size = dist.get_world_size()
     rank = dist.get_rank()
 
@@ -16,8 +14,9 @@ def setup(backend):
 
 
 def main():
-    rank = dist.get_rank()
     setup('nccl')
+    rank = dist.get_rank()
+
     hostname = socket.gethostname()
     max_length = 256
     # 将主机名转换为固定长度的 ASCII tensor
