@@ -24,7 +24,7 @@ def main():
     hostname_tensor = torch.tensor(ascii_values, dtype=torch.long, device='cuda')
 
     # 为所有进程的主机名创建一个列表
-    gathered_hostnames = [torch.zeros(max_length, dtype=torch.long, device='cuda') for _ in range(world_size)]
+    gathered_hostnames = [torch.zeros(max_length, dtype=torch.long, device='cuda') for _ in range(dist.get_world_size())]
 
     # 使用 all_gather 收集所有进程的主机名
     dist.all_gather(gathered_hostnames, hostname_tensor)
