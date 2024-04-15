@@ -64,8 +64,8 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
 
 
         tensor = torch.rand(num_elements, device='cuda')
-        tensor_copy = tensor.clone()
-        gathered_tensors = [torch.zeros_like(tensor_copy) for _ in range(dist.get_world_size())]
+        # tensor_copy = tensor.clone()
+        # gathered_tensors = [torch.zeros_like(tensor_copy) for _ in range(dist.get_world_size())]
         dist.barrier()
         start_time = time.time()
         
@@ -73,26 +73,26 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
             dist.all_reduce(tensor)
         dist.barrier()   
         duration = (time.time() - start_time) / num_tests
-        torch.cuda.empty_cache()
-        start_time_gather = time.time()
-        for _ in range(num_tests):
-            dist.all_gather(gathered_tensors, tensor_copy)
+        # torch.cuda.empty_cache()
+        # start_time_gather = time.time()
+        # for _ in range(num_tests):
+        #     dist.all_gather(gathered_tensors, tensor_copy)
 
-        dist.barrier()
-        elapsed_time = (time.time() - start_time_gather)/num_tests
-        if rank == 0:
-            print(f"Elapsed time: {elapsed_time} seconds")
+        # dist.barrier()
+        # elapsed_time = (time.time() - start_time_gather)/num_tests
+        # if rank == 0:
+        #     print(f"Elapsed time: {elapsed_time} seconds")
         
         torch.cuda.empty_cache()
         
-        if rank == 0:
-            print(f"Duration: {duration:.6f}s")
+        # if rank == 0:
+        #     print(f"Duration: {duration:.6f}s")
         # 每个节点的数据传输量为2 * N * S（其中N是节点数，S是数据大小）
         # total_data_per_node = 2 * dist.get_world_size() * size
         # 计算算法带宽（单位转换为Gigabytes per second）
-        algbw_gather = (size*(gpus_node-1) / elapsed_time) / 1e9
-        if rank == 0:
-            print(f"all_gather: Size: {size} bytes, Duration: {elapsed_time:.6f}s, Algbw: {algbw_gather:.2f} GB/s")
+        # algbw_gather = (size*(gpus_node-1) / elapsed_time) / 1e9
+        # if rank == 0:
+        #     print(f"all_gather: Size: {size} bytes, Duration: {elapsed_time:.6f}s, Algbw: {algbw_gather:.2f} GB/s")
         algbw = (size / duration) / 1e9 #计算方式存疑
         busbw = algbw * (2 * (gpus_node - 1) / gpus_node)
         if rank == 0:
