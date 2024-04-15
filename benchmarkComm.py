@@ -63,18 +63,27 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
 
         tensor = torch.rand(num_elements, device='cuda')
 
+        gathered_tensors = [torch.zeros_like(tensor) for _ in range(dist.get_world_size())]
         dist.barrier()
         start_time = time.time()
         
         for _ in range(num_tests):
             dist.all_reduce(tensor)
-            dist.barrier()
+        dist.barrier()   
 
+        start_time = time.time()
+        for _ in range(num_tests):
+            dist.all_gather(gathered_tensors, tensor)
+        dist.barrier()
+        elapsed_time = time.time() - start_time
+
+        print(f"Elapsed time: {elapsed_time/num_tests} seconds")
+        
         duration = (time.time() - start_time) / num_tests
         # 每个节点的数据传输量为2 * N * S（其中N是节点数，S是数据大小）
         total_data_per_node = 2 * dist.get_world_size() * size
         # 计算算法带宽（单位转换为Gigabytes per second）
-        algbw = (total_data_per_node / duration) / 1e9
+        algbw = (total_data_per_node / duration) / 1e9 #计算方式存疑
         busbw = algbw * (2 * (gpus_node - 1) / gpus_node)
         print(f"Size: {size} bytes, Duration: {duration:.6f}s, Algbw: {algbw:.2f} GB/s, Busbw: {busbw:.2f} GB/s")
         size *= factor
