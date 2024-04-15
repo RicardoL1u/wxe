@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 设置环境变量 
 # 默认在RoCE场景下已经设置了NCCL_IB_HCA、NCCL_IB_GID_INDEX、NCCL_CROSS_NIC、NCCL_IB_TC环境变量，无需设置 
 export FIRST_HCA=$(echo $NCCL_IB_HCA | awk -F',' '{print $1}')
@@ -30,7 +32,6 @@ DISTRIBUTED_ARGS="
     --master_port $MASTER_PORT
 "
 
-#!/bin/bash
 
 # 调用 Python 脚本并捕获输出
 output=$(torchrun $DISTRIBUTED_ARGS getIPList.py)
