@@ -62,8 +62,8 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
 
 
         tensor = torch.rand(num_elements, device='cuda')
-
-        gathered_tensors = [torch.zeros_like(tensor) for _ in range(dist.get_world_size())]
+        tensor_copy = tensor.clone()
+        gathered_tensors = [torch.zeros_like(tensor_copy) for _ in range(dist.get_world_size())]
         dist.barrier()
         start_time = time.time()
         
@@ -73,7 +73,7 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
 
         start_time = time.time()
         for _ in range(num_tests):
-            dist.all_gather(gathered_tensors, tensor)
+            dist.all_gather(gathered_tensors, tensor_copy)
         dist.barrier()
         elapsed_time = time.time() - start_time
 
