@@ -33,7 +33,7 @@ DISTRIBUTED_ARGS="
 #!/bin/bash
 
 # 调用 Python 脚本并捕获输出
-output=$(python torchrun $DISTRIBUTED_ARGS runGetList.py)
+output=$(python torchrun $DISTRIBUTED_ARGS getIPList.py)
 
 # 显示捕获的输出
 echo "The list returned by Python is: $output"
