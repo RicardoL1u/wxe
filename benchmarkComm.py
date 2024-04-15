@@ -73,14 +73,14 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
             dist.all_reduce(tensor)
         dist.barrier()   
         duration = (time.time() - start_time) / num_tests
-        
+
         start_time = time.time()
         for _ in range(num_tests):
             dist.all_gather(gathered_tensors, tensor_copy)
         dist.barrier()
-        elapsed_time = time.time() - start_time
+        elapsed_time = (time.time() - start_time)/num_tests
         if rank == 0:
-            print(f"Elapsed time: {elapsed_time/num_tests} seconds")
+            print(f"Elapsed time: {elapsed_time} seconds")
 
         
         if rank == 0:
