@@ -87,7 +87,7 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
         # 每个节点的数据传输量为2 * N * S（其中N是节点数，S是数据大小）
         total_data_per_node = 2 * dist.get_world_size() * size
         # 计算算法带宽（单位转换为Gigabytes per second）
-        algbw = (total_data_per_node / duration) / 1e9 #计算方式存疑
+        algbw = (size / duration) / 1e9 #计算方式存疑
         busbw = algbw * (2 * (gpus_node - 1) / gpus_node)
         if rank == 0:
             print(f"Size: {size} bytes, Duration: {duration:.6f}s, Algbw: {algbw:.2f} GB/s, Busbw: {busbw:.2f} GB/s")
