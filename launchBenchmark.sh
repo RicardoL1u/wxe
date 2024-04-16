@@ -17,10 +17,13 @@ GPUS_PER_NODE=$(echo $NVIDIA_VISIBLE_DEVICES | awk -F"," '{print NF}')
 # 设置分布式训练DDP所需的环境变量， 如果是单机场景，就默认赋值单机的参数 
 MASTER_ADDR=${MASTER_ADDR:-'127.0.0.1'}
 MASTER_PORT=${MASTER_PORT:-'29500'}
-NNODES=${WORLD_SIZE:-'1'}
+# NNODES=${WORLD_SIZE:-'1'}
+NNODES=$2
 NODE_RANK=${RANK:-'0'}
 WORLD_SIZE=$(($GPUS_PER_NODE*$NNODES))
 
+NODE_RANK=$3
+MASTER_ADDR=$1
 DISTRIBUTED_ARGS="
     --nproc_per_node $GPUS_PER_NODE \
     --nnodes $NNODES \
