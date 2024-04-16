@@ -21,7 +21,6 @@ NNODES=${WORLD_SIZE:-'1'}
 NODE_RANK=${RANK:-'0'}
 WORLD_SIZE=$(($GPUS_PER_NODE*$NNODES))
 
-
 DISTRIBUTED_ARGS="
     --nproc_per_node $GPUS_PER_NODE \
     --nnodes $NNODES \

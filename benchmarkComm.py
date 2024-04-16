@@ -100,6 +100,8 @@ def benchmark_nccl_communication(begin_size, end_size, factor, gpus_node, num_te
             print(f"all_reduce: Size: {size} bytes, Duration: {duration:.6f}s, Algbw: {algbw:.2f} GB/s, Busbw: {busbw:.2f} GB/s")
         size *= factor
 
+def cleanup():
+    dist.destroy_process_group()
         
 def main():
     parser = argparse.ArgumentParser(description="Simulate nccl-test for distributed communication performance testing.")
@@ -176,6 +178,6 @@ def main():
         print("--------------------------")
 
     benchmark_nccl_communication(args.begin_size, args.end_size, args.factor,args.gpus)
-
+    cleanup()
 if __name__ == "__main__":
     main()
